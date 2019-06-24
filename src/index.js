@@ -119,7 +119,9 @@ class Person {
 // by using extends that means that the Teacher class is being extended from the Person class
 // when you add a constructor in a child class you have to call the constructor of its parent class
 class Teacher extends Person {
-  constructor(name, degree) {}
+  constructor(name, degree) {
+    
+  }
   teach() {
     console.log("teach");
   }
