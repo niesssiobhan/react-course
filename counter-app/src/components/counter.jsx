@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 
 class Counter extends Component {
-  state = {
-    count: 0,
-    tags: ["tag1", "tag2", "tag3"]
-    // imageUrl: "https://picsum.photos/200"
-  };
+  // state is being removed so that we can have a single source of truth and have a controlled component. This has to be done so that when we click on the Reset button the local state will also reset
+
+  // state = {
+  //   value: this.props.counter.value,
+  //   tags: ["tag1", "tag2", "tag3"]
+  //   // imageUrl: "https://picsum.photos/200"
+  // };
 
   // constructor() {
   //   super();
@@ -14,23 +16,23 @@ class Counter extends Component {
   //   // for every event handler, you will have to write code like this above
   // }
 
-  renderTags() {
-    if (this.state.tags.length === 0) return <p>There are no tags!</p>;
+  // renderTags() {
+  //   if (this.state.tags.length === 0) return <p>There are no tags!</p>;
 
-    return (
-      <ul>
-        {this.state.tags.map(tag => (
-          <li key={tag}>{tag}</li>
-        ))}
-      </ul>
-    );
-  }
+  //   return (
+  //     <ul>
+  //       {this.state.tags.map(tag => (
+  //         <li key={tag}>{tag}</li>
+  //       ))}
+  //     </ul>
+  //   );
+  // }
 
   // making this into an arrow function, that then means that it inhereits the 'this' key word and then you dont have to have the constructor function from above
-  handleIncrement = product => {
-    // console.log(product);
-    this.setState({ count: this.state.count + 1 }); // we set it to setState so that React is aware of the state changes and will then show the incrementation as you click the 'Increment' button
-  };
+  // handleIncrement = () => {
+  // console.log(product);
+  // this.setState({ value: this.state.value + 1 }); // we set it to setState so that React is aware of the state changes and will then show the incrementation as you click the 'Increment' button
+  // };
 
   // this this oject below you are able to add it to the span of the return. So to make it affect all within the return you would have: style={this.styles}
   // styles = {
@@ -47,28 +49,35 @@ class Counter extends Component {
     return (
       <div>
         {/* <img src={this.state.imageUrl} alt="random image" /> */}
+        {/* {this.props.children}  */}
         <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
         <button
-          onClick={() => this.handleIncrement()}
+          onClick={() => this.props.onIncrement(this.props.counter)}
           className="btn btn-secondary btn-sm"
         >
           Increment
         </button>
-        {this.state.tags.length === 0 && "Please create a new tag!"}
-        {this.renderTags()}
+        <button
+          onClick={() => this.props.onDelete(this.props.counter.id)}
+          className="btn btn-danger btn-sm m-2"
+        >
+          Delete
+        </button>
+        {/* {this.props.counter.tags.length === 0 && "Please create a new tag!"}
+        {this.renderTags()} */}
       </div>
     );
   }
 
   getBadgeClasses() {
     let classes = "badge m-2 badge-";
-    classes += this.state.count === 0 ? "warning" : "primary";
+    classes += this.props.counter.count === 0 ? "warning" : "primary";
     return classes;
   }
 
   formatCount() {
-    const { count } = this.state; // here we are going to use object destructuring. We are taking the 'count' property of the 'this.state' object and storing it in a separate constanst named 'count' this is so that we can just type out 'count' instead of 'this.state.count'
-    return count === 0 ? "Zero" : count;
+    const { value } = this.props.counter; // here we are going to use object destructuring. We are taking the 'count' property of the 'this.state' object and storing it in a separate constanst named 'count' this is so that we can just type out 'count' instead of 'this.state.count'
+    return value === 0 ? "Zero" : value;
   }
 }
 
@@ -84,3 +93,9 @@ export default Counter;
 // badge-warning will create a yellow badge
 
 // what is happening in the <ul> is that we are getting a string and mapping it (because it is an array) with jsx expression which then gets compiled into a React element, which is also like a plain JS object
+
+// {this.props.children} is going to set the child attributes that have been given to the counter
+
+// With this Counter component when it comes to the delete button and having 'this.props.onDelete' it is raising an event
+
+// the handleIncrement method is removed because we no longer have state withing the Counter component. The Counter component is going to be a controlled component (expained above)
