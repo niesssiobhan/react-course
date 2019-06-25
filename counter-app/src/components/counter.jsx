@@ -10,7 +10,7 @@ class Counter extends Component {
   // constructor() {
   //   super();
   //   this.handleIncrement = this.handleIncrement.bind(this); // this here will return a new function
-  //   // this new function needs to be created so that the handleIncrement fuction can access the 'this'method
+  //   // this new function needs to be created so that the handleIncrement function can access the 'this'method
   //   // for every event handler, you will have to write code like this above
   // }
 
@@ -28,7 +28,7 @@ class Counter extends Component {
 
   // making this into an arrow function, that then means that it inhereits the 'this' key word and then you dont have to have the constructor function from above
   handleIncrement = product => {
-    console.log(product);
+    // console.log(product);
     this.setState({ count: this.state.count + 1 }); // we set it to setState so that React is aware of the state changes and will then show the incrementation as you click the 'Increment' button
   };
 
@@ -49,7 +49,7 @@ class Counter extends Component {
         {/* <img src={this.state.imageUrl} alt="random image" /> */}
         <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
         <button
-          onClick={() => this.handleIncrement(product)}
+          onClick={() => this.handleIncrement()}
           className="btn btn-secondary btn-sm"
         >
           Increment
