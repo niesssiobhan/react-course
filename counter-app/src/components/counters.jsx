@@ -2,51 +2,20 @@ import React, { Component } from "react";
 import Counter from "./counter";
 
 class Counters extends Component {
-  state = {
-    counters: [
-      { id: 1, value: 4 },
-      { id: 2, value: 0 },
-      { id: 3, value: 0 },
-      { id: 4, value: 0 }
-    ]
-  };
-
-  handleIncrement = counter => {
-    const counters = [...this.state.counters];
-    const index = counters.indexOf(counter);
-    counters[index] = { ...counter };
-    counters[index].value++;
-    this.setState({ counters });
-  };
-
-  handleReset = () => {
-    const counters = this.state.counters.map(c => {
-      c.value = 0;
-      return c;
-    });
-    this.setState({ counters });
-  };
-
-  handleDelete = counterId => {
-    // console.log("Event Handler Called");
-    const counters = this.state.counters.filter(c => c.id !== counterId);
-    this.setState({ counters });
-  };
-
   render() {
     return (
       <div>
         <button
-          onClick={this.handleReset}
+          onClick={this.props.onReset}
           className="btn btn-primary btn-sm m-2"
         >
           Reset
         </button>
-        {this.state.counters.map(counter => (
+        {this.props.counters.map(counter => (
           <Counter
             key={counter.id}
-            onDelete={this.handleDelete}
-            onIncrement={this.handleIncrement}
+            onDelete={this.props.onDelete}
+            onIncrement={this.props.onIncrement}
             counter={counter}
             // value={counter.value}
             // id={counter.id}
@@ -70,3 +39,5 @@ export default Counters;
 // the Counters compnent is the parent to the Counter component and the handleDelete function is handling the event from the Counter component Delete button
 
 // with the handleReset function we are write the fucntionality so that the counter values reset to the value of 0
+
+// the Counter component is raising the delete and increment events. With having {this.props.onDelete} or {this.props.onIncrement} means that we are bubbling that event to the parent component
