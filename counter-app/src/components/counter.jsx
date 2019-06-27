@@ -1,6 +1,17 @@
 import React, { Component } from "react";
 
 class Counter extends Component {
+  componentDidUpdate(prevProps, prevState) {
+    console.log("prevProps", prevProps);
+    console.log("prevState", prevState);
+    if (prevProps.counter.value !== this.props.counter.value) {
+    }
+  }
+
+  componentWillUnmount() {
+    console.log("Counter - Will Unmount");
+  }
+
   // state is being removed so that we can have a single source of truth and have a controlled component. This has to be done so that when we click on the Reset button the local state will also reset
 
   // state = {
@@ -45,24 +56,35 @@ class Counter extends Component {
     // this is so that you can control when the badge will trun yellow or blue and then you have it set to 'classes' so that you can use that name instead of all the badge text
     // let classes = "badge m-2 bandge-";
     // classes += this.state.count === 0 ? "warning" : "primary";
-
+    console.log("Counter - Rendered");
     return (
-      <div>
+      <div className="row">
+        <div className="col-1">
+          <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
+        </div>
+        <div className="col">
+          <button
+            onClick={() => this.props.onIncrement(this.props.counter)}
+            className="btn btn-secondary btn-sm"
+          >
+            +
+          </button>
+          <button
+            onClick={() => this.props.onDecrement(this.props.counter)}
+            className="btn btn-secondary btn-sm m-2"
+            disabled={this.props.counter.value === 0 ? "disabled" : ""}
+          >
+            -
+          </button>
+          <button
+            onClick={() => this.props.onDelete(this.props.counter.id)}
+            className="btn btn-danger btn-sm"
+          >
+            Delete
+          </button>
+        </div>
         {/* <img src={this.state.imageUrl} alt="random image" /> */}
         {/* {this.props.children}  */}
-        <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
-        <button
-          onClick={() => this.props.onIncrement(this.props.counter)}
-          className="btn btn-secondary btn-sm"
-        >
-          Increment
-        </button>
-        <button
-          onClick={() => this.props.onDelete(this.props.counter.id)}
-          className="btn btn-danger btn-sm m-2"
-        >
-          Delete
-        </button>
         {/* {this.props.counter.tags.length === 0 && "Please create a new tag!"}
         {this.renderTags()} */}
       </div>
