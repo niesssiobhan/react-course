@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import _ from "lodash";
 
 const Pagination = props => {
@@ -26,8 +27,17 @@ const Pagination = props => {
   );
 };
 
+Pagination.propTypes = {
+  itemsCount: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired
+};
+
 export default Pagination;
 
 //----------Notes----------//
 
 // in pagesCount the '_' is referring to the lodash and you have to have th pagesCount + 1 because it will only include pages 1-3 but wont include the 4th page so we include + 1 to make sure that we are getting a max of 4 pages if needed
+
+// when we have: const { itemsCount, pageSize, currentPage, onPageChange } = props; this means that we have object destructuring. so that we dont have to have this.props... we can just say onPageChange and so on
