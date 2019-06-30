@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { throwStatement } from "@babel/types";
+import React from "react";
 
 const Like = props => {
   let classes = "fa fa-heart";
