@@ -1,22 +1,27 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
     <ul>
       <li>
-        <a href="/">Home</a>
+        <Link to="/">Home</Link>
       </li>
       <li>
-        <a href="/products">Products</a>
+        <Link to="/products">Products</Link>
       </li>
       <li>
-        <a href="/posts/2018/06">Posts</a>
+        <Link to="/posts/2018/06">Posts</Link>
       </li>
       <li>
-        <a href="/admin">Admin</a>
+        <Link to="/admin">Admin</Link>
       </li>
     </ul>
   );
 };
 
 export default NavBar;
+
+//----------Notes----------//
+
+// the Link tag helps prevent additional http requests to be sent to the server. It will only update the URL
