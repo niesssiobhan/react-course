@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import axios from "axios";
+import { ToastContainer } from "react-toastify";
+import http from "./services/httpService";
+import config from "./config.json";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
-
-const apiEndPoint = "https://jsonplaceholder.typicode.com/posts";
 
 class App extends Component {
   state = {
@@ -10,13 +11,13 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    const { data: posts } = await axios.get(apiEndPoint);
+    const { data: posts } = await http.get(config.apiEndpoint);
     this.setState({ posts });
   }
 
   handleAdd = async () => {
     const obj = { title: "a", body: "b" };
-    const { data: post } = await axios.post(apiEndPoint, obj);
+    const { data: post } = await http.post(config.apiEndpoint, obj);
     console.log(post);
 
     const posts = [post, ...this.state.posts];
@@ -25,8 +26,8 @@ class App extends Component {
 
   handleUpdate = async post => {
     post.title = "UPDATED";
-    axios.put(
-      `${apiEndPoint}'/' 
+    http.put(
+      `${config.apiEndpoint}'/' 
     ${post.id}`,
       post
     );
@@ -39,13 +40,32 @@ class App extends Component {
     // console.log(data);
   };
 
-  handleDelete = post => {
-    console.log("Delete", post);
+  handleDelete = async post => {
+    //this is a reference to the original state
+    const originalPosts = this.state.posts;
+    // this is updating the UI
+    const posts = this.state.posts.filter(p => p.id !== post.id);
+    this.setState({ posts });
+
+    try {
+      await http.delete(`${config.apiEndpoint}'/' 
+      ${post.id}`);
+      // throw new Error("");
+    } catch (ex) {
+      // console.log("HANDLE DELETE CATCH BLOCK");
+      // this is representing an expected error
+      if (ex.response && ex.response.status === 404)
+        alert("This post has already been deleted");
+      this.setState({ posts: originalPosts }); // this is updating the state to the previous state
+    }
+
+    // console.log("Delete", post);
   };
 
   render() {
     return (
       <React.Fragment>
+        <ToastContainer />
         <button className="btn btn-primary" onClick={this.handleAdd}>
           Add
         </button>
