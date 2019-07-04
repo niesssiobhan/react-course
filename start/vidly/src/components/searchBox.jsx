@@ -14,3 +14,7 @@ const SearchBox = ({ value, onChange }) => {
 };
 
 export default SearchBox;
+
+//----------Notes---------//
+
+// my-3 means that we are setting a margin on the y axis, the top and the bottom with 3
