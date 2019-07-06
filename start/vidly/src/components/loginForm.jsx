@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { login } from "../services/authService";
+import auth from "../services/authService";
 
 class LoginForm extends Form {
   state = {
@@ -21,9 +22,9 @@ class LoginForm extends Form {
   doSubmit = async () => {
     try {
       const { data } = this.state;
-      const { data: jwt } = await login(data.username, data.password);
-      localStorage.setItem("token", jwt);
-      this.props.history.push("/");
+      await auth.login(data.username, data.password);
+      const { state } = this.props.location;
+      window.location = state ? state.from.pathname : "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
@@ -34,6 +35,8 @@ class LoginForm extends Form {
   };
 
   render() {
+    if (auth.getCurrentUser()) return <Redirect to="/" />;
+
     return (
       <div>
         <h1>Login</h1>
@@ -61,3 +64,5 @@ export default LoginForm;
 // (let item of result.error.details) errors[item.path[0]] = item.message; this means that we are looking through the details of the error message from Joi and find the key and value pairs that we are looking for
 
 // we have set a disabled property to the button becasue we dont want thr user to try and click the buttonif thet have not filled out both input fields of the username and the password
+
+// window.location = "/"; <- this is going too cause a full load of the application so that after the user logs in then Login is not displayed in the nav bar after they have done so
